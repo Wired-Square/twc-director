@@ -145,6 +145,8 @@ class consoleUI(Thread):
         self._refresh_list = True
 
     def run(self):
+        asyncio.set_event_loop(self._loop)
+        
         self._is_reading.set()
 
         screen = curses.initscr()
