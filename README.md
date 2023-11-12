@@ -27,7 +27,7 @@ The utility or library can not be used to start or stop a charge session in a wa
 From within the module directory, or after the module has been installed help for the utility can be found by running the following command.
 
 ```bash
-pytho3 -m twcdirector.utility --help
+python3 -m twcdirector.utility --help
 ```
 
 Once appropriate options have been selected and the utility is up-and-running it can be exited by hitting CTRL-C which will perform a graceful shutdown.
