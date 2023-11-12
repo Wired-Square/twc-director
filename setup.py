@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="twc-director",
-    version="0.0.1",
+    version="0.0.2",
     author="Garth Berry",
     author_email="garth@wiredsquare.com",
     description="Tesla Wall Charger Communication Library",

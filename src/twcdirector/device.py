@@ -26,7 +26,8 @@ class StatusDataFlag(IntFlag):
 
 class TWCPeripheral:
     """TWCController Device"""
-    def __init__(self, address=None, max_current=3200, command_queue=None, transmit_queue=None, device_initialised_callback=None):
+    def __init__(self, address=None, max_current=3200, event_loop=None, command_queue=None, transmit_queue=None, device_initialised_callback=None):
+        self._event_loop = event_loop
         self._address = address
         self._protocol: TWCProtocol = TWCProtocol()
         self._max_current = max_current
@@ -222,7 +223,7 @@ class TWCPeripheral:
         return self._processing_task
 
     def _string_decode(self, data):
-        serial = bytearray(data.serial).decode("utf-8", "ignore")
+        serial = bytearray(data.serial).decode("ascii", "ignore")
         # Remove null termination in underlying buffer
         try:
             serial = serial[:serial.index("\x00")]
@@ -270,7 +271,7 @@ class TWCPeripheral:
             self._device_data["car_connected"] = False
 
         if previous_state != self._device_data["car_connected"]:
-            asyncio.get_event_loop().create_task(self._process_callbacks("TWC_CAR_CONNECTED", self._device_data_updated_callbacks.get("TWC_CAR_CONNECTED", [])))
+            self._event_loop.create_task(self._process_callbacks("TWC_CAR_CONNECTED", self._device_data_updated_callbacks.get("TWC_CAR_CONNECTED", [])))
 
         return self._device_data["car_connected"]
 
@@ -421,8 +422,9 @@ class TWCPeripheral:
 
 
 class TWCController(TWCPeripheral):
-    def __init__(self, address=None, shared_max_current=3200, command_queue=None, transmit_queue=None, device_initialised_callback=None):
+    def __init__(self, address=None, shared_max_current=3200, event_loop=None,  command_queue=None, transmit_queue=None, device_initialised_callback=None):
         super().__init__(address=address,
+                         event_loop=event_loop,
                          command_queue=command_queue,
                          transmit_queue=transmit_queue,
                          device_initialised_callback=device_initialised_callback)
@@ -449,7 +451,7 @@ class TWCController(TWCPeripheral):
     def monitor_peripheral_state(self, peripheral: TWCPeripheral):
         if peripheral and peripheral.get_address() in self._peripheral_last_state:
             if peripheral.get_status_charge_state() == Status.NEGOTIATING and self._peripheral_last_state != Status.NEGOTIATING:
-                asyncio.get_event_loop().create_task(self.queue_peripheral_initial_current_command(peripheral.get_address(), peripheral.get_setpoint_current()))
+                self._event_loop.create_task(self.queue_peripheral_initial_current_command(peripheral.get_address(), peripheral.get_setpoint_current()))
 
             self._peripheral_last_state[peripheral.get_address()] = peripheral.get_status_charge_state()
 

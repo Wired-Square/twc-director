@@ -174,11 +174,13 @@ class consoleUI(Thread):
                     elif key == "d":
                         if self._fake_controller and self._current_index >= 0:
                             address = self._devices[self._current_index].address
-                            asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_open_contactors_command(address), self._loop)
+                            future = asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_open_contactors_command(address), self._loop)
+                            future.result()
                     elif key == "c":
                         if self._fake_controller and self._current_index >= 0:
                             address = self._devices[self._current_index].address
-                            asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_close_contactors_command(address), self._loop)
+                            future = asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_close_contactors_command(address), self._loop)
+                            future.result()
                     elif key == "1":
                         if self._fake_controller and self._current_index >= 0:
                             device = self._devices[self._current_index]
@@ -202,31 +204,38 @@ class consoleUI(Thread):
                     elif key == "+":
                         if self._fake_controller and self._current_index >= 0:
                             address = self._devices[self._current_index].address
-                            asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_increase_current_command(address), self._loop)
+                            future = asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_increase_current_command(address), self._loop)
+                            future.result()
                     elif key == "-":
                         if self._fake_controller and self._current_index >= 0:
                             address = self._devices[self._current_index].address
-                            asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_decrease_current_command(address), self._loop)
+                            future =asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_decrease_current_command(address), self._loop)
+                            future.result()
                     elif key == "6":
                         if self._fake_controller and self._current_index >= 0:
                             address = self._devices[self._current_index].address
-                            asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_session_current_command(address, 600), self._loop)
+                            future = asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_session_current_command(address, 600), self._loop)
+                            future.result()
                     elif key == "7":
                         if self._fake_controller and self._current_index >= 0:
                             address = self._devices[self._current_index].address
-                            asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_session_current_command(address, 1000), self._loop)
+                            future = asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_session_current_command(address, 1000), self._loop)
+                            future.result()
                     elif key == "8":
                         if self._fake_controller and self._current_index >= 0:
                             address = self._devices[self._current_index].address
-                            asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_session_current_command(address, 2000), self._loop)
+                            future = asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_session_current_command(address, 2000), self._loop)
+                            future.result()
                     elif key == "9":
                         if self._fake_controller and self._current_index >= 0:
                             address = self._devices[self._current_index].address
-                            asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_session_current_command(address, 3200), self._loop)
+                            future = asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_session_current_command(address, 3200), self._loop)
+                            future.result()
                     elif key == "0":
                         if self._fake_controller and self._current_index >= 0:
                             address = self._devices[self._current_index].address
-                            asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_session_current_command(address, 0), self._loop)
+                            future = asyncio.run_coroutine_threadsafe(self._fake_controller.queue_peripheral_session_current_command(address, 0), self._loop)
+                            future.result()
 
                     print(f"""\x1b[1;1H\x1b[0KCommand: {key}""".zfill(20))
 

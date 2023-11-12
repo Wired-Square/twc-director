@@ -86,6 +86,7 @@ class TWCListener:
 
     def _initialise_fake_controller(self, address=0xF00D):
         self._fake_controller = TWCController(address=address,
+                                              event_loop=self._event_loop,
                                               command_queue=asyncio.Queue(),
                                               transmit_queue=self._transmit_queue,
                                               shared_max_current=self._shared_max_current)
@@ -192,6 +193,7 @@ class TWCListener:
             if device is None:
                 device = TWCPeripheral(sender,
                                        command_queue=asyncio.Queue(),
+                                       event_loop=self._event_loop,
                                        transmit_queue=self._transmit_queue,
                                        device_initialised_callback=self.device_initialised_callback)
                 self._devices[sender] = device
